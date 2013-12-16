@@ -13,6 +13,7 @@ module SimpleNavigationRenderers
                                                                  "dropdown-menu" ].flatten.compact.join(' ')
       
       list_content = item_container.items.inject([]) do |list, item|
+        @item = item
         li_options = item.html_options
 
         if li_options.delete(:divider)
@@ -79,7 +80,8 @@ module SimpleNavigationRenderers
       def name_generator( name )
         if name.instance_of?(Hash)
           raise SimpleNavigationRenderers::InvalidHash unless name.keys.include?(:icon) || name.keys.include?(:text)
-          [ (name[:icon] ? content_tag(:span, '', {class: name[:icon]}.merge(name[:title] ? {title: name[:title]} : {}) ) : nil), name[:text] ].compact.join(' ')
+          icon = (@item.selected? && name[:icon_active]) || name[:icon]
+          [ (icon ? content_tag(:span, '', {class: icon}.merge(name[:title] ? {title: name[:title]} : {}) ) : nil), name[:text] ].compact.join(' ')
         else
           @config_name_generator.call(name)
         end

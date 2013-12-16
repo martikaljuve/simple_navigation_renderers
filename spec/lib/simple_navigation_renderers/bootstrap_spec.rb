@@ -166,9 +166,23 @@ describe SimpleNavigationRenderers::Bootstrap do
 
 
     context "when 'hash' provided in place of 'name'" do
+      context "with ':icon' and ':icon_active' parameters" do
+        context "on a selected item" do
+          it "adds a span-tag with classes from the ':icon_active' parameter" do
+            HTML::Selector.new('ul > li > a > span.fa.fa-fw.fa-bullseye').select(render_result).should have(1).entries
+          end
+        end
+
+        context "on an unselected item" do
+          it "adds span-tag with classes from the ':icon' parameter" do
+            HTML::Selector.new('ul > li > a > span.fa.fa-fw.fa-book').select(render_result).should have(1).entries
+          end
+        end
+      end
+
       context "with ':icon' parameter" do
         it "adds span-tag with classes from the parameter" do
-          HTML::Selector.new('ul > li > a > span.fa.fa-fw.fa-bullhorn').select(render_result).should have(1).entries
+          HTML::Selector.new('ul > li > a > span.fa.fa-fw.fa-book').select(render_result).should have(1).entries
         end
       end
 
@@ -180,7 +194,7 @@ describe SimpleNavigationRenderers::Bootstrap do
 
       context "with ':text' parameter" do
         it "uses the parameter value as 'name' of the item" do
-          HTML::Selector.new('ul > li > a > span.fa.fa-fw.fa-bullhorn').select(render_result)[0].parent.children[1].to_s.should == " News"
+          HTML::Selector.new('ul > li > a > span.fa.fa-fw.fa-bullseye').select(render_result)[0].parent.children[1].to_s.should == " News"
         end
       end
 
